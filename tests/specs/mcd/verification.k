@@ -406,6 +406,14 @@ module VERIFICATION
     rule (notBool (A andBool B)) andBool A => (notBool B) andBool A
     rule chop(Y) ==K 0 => Y ==Int 0 requires #rangeSInt(256, Y)
 
+    // ### spotter-exhaustiveness
+
+    rule #range(M [ K <- _   ], START, WIDTH) => #range(M, START, WIDTH) requires K                           <Int START orBool START +Int WIDTH <=Int K
+    rule #range(M [ K := BUF ], START, WIDTH) => #range(M, START, WIDTH) requires K +Int #sizeByteArray(BUF) <=Int START orBool START +Int WIDTH <=Int K
+    rule #sizeByteArray(#padToWidth(32, #asByteStack(#getValue(#bytes32(X))))) => 32
+    rule #asWord(#padToWidth(32, #asByteStack(#getValue(#bytes32(X))))) => X
+    rule (maxUInt160 &Int X) modInt pow160 => maxUInt160 &Int X requires 0 <=Int X
+
     // ### vat-mului-fail-rough
 
     /*
