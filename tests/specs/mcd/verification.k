@@ -403,6 +403,8 @@ module VERIFICATION
     // ### Gas Simplification
 
     rule I -Int I => 0
+    rule (notBool (A andBool B)) andBool A => (notBool B) andBool A
+    rule chop(Y) ==K 0 => Y ==Int 0 requires #rangeSInt(256, Y)
 
     // ### vat-mului-fail-rough
 
